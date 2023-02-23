@@ -1,0 +1,77 @@
+{
+    "require": {
+        "symfony/console": "^6.2",
+        "symfony/framework-bundle": "^6.2",
+        "symfony/config": "^6.2",
+        "symfony/routing": "^6.2",
+        "symfony/dotenv": "^6.2",
+        "symfony/dependency-injection": "^6.2",
+        "symfony/runtime": "^6.2",
+        "webmozart/assert": "^1.11"
+    },
+    "require-dev": {
+        "infection/infection": "^0.26.2",
+        "phpro/grumphp": "^1.13",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan": "^1.8",
+        "phpstan/phpstan-webmozart-assert": "^1.0",
+        "phpunit/phpunit": "^9.5",
+        "rector/rector": "^0.13",
+        "roave/infection-static-analysis-plugin": "^1.16.0",
+        "squizlabs/php_codesniffer": "^3.6",
+        "symfony/browser-kit": "^6.0",
+        "symfony/var-dumper": "^6.0",
+        "symplify/easy-coding-standard": "^11.0",
+        "vimeo/psalm": "^4.24"
+    },
+    "autoload": {
+        "psr-4": {
+            "DrinkMachine\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "DrinkMachine\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "auto-scripts": {
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ],
+        "precommit-check": [
+            "@cs-check",
+            "@test",
+            "@inspect",
+            "@psalm"
+        ],
+        "check-all": [
+            "@cs-check",
+            "@test",
+            "@inspect",
+            "@psalm",
+            "@infection",
+            "@rector-check"
+        ],
+        "cs-check": "ecs check src config",
+        "cs-fix": "ecs check src config --fix",
+        "inspect": "phpstan analyse src config -l9 --ansi --xdebug",
+        "test": "phpunit --colors=always",
+        "psalm": "psalm --no-cache",
+        "infection": "XDEBUG_MODE=coverage roave-infection-static-analysis-plugin",
+        "rector": "rector process src config",
+        "rector-check": "rector process src config --dry-run"
+    },
+    "config": {
+        "allow-plugins": {
+            "infection/extension-installer": true,
+            "phpro/grumphp": true,
+            "phpstan/extension-installer": true,
+            "symfony/runtime": true
+        }
+    }
+}

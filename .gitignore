@@ -1,0 +1,7 @@
+vendor
+var
+
+.env
+.php-version
+.phpunit.result.cache
+infection.log
