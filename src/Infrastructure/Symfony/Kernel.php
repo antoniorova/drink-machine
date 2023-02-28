@@ -26,10 +26,7 @@ final class Kernel extends BaseKernel
 
     protected function configureContainer(ContainerConfigurator $container): void
     {
-        $frameworkConfigLoader = require __DIR__ . '/../../../config/framework.php';
-        $frameworkConfigLoader($container->withPath(__DIR__ . '/../../../config/framework.php'));
-        $servicesConfigLoader = require __DIR__ . '/../../../config/services.php';
-        $servicesConfigLoader($container->withPath(__DIR__ . '/../../../config/services.php'));
+        $container->import('../../../config/*.php');
     }
 
     public function getCacheDir(): string
