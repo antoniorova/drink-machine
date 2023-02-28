@@ -3,7 +3,6 @@
         "symfony/console": "^6.2",
         "symfony/framework-bundle": "^6.2",
         "symfony/config": "^6.2",
-        "symfony/routing": "^6.2",
         "symfony/dotenv": "^6.2",
         "symfony/dependency-injection": "^6.2",
         "symfony/runtime": "^6.2",

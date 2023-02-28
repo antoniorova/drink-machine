@@ -29,26 +29,43 @@ class DrinkMachineCommand extends Command
         'O' => OrangeJuice::NAME,
         'M' => 'message',
     ];
+    private const MONEY_ARGUMENT = 'money';
+    private const ORDER_ARGUMENT = 'order';
+    private const EXTRA_HOT_OPTION = 'extra-hot';
 
     public function __construct(
-        private readonly DrinkMakerHandler $command
+        private readonly DrinkMakerHandler $handler
     ) {
         parent::__construct();
     }
     protected function configure(): void
     {
         $this
-            ->setName('make')
-            ->addArgument('order', InputArgument::REQUIRED, 'Order to the Drink Machine')
+            ->setName(self::ORDER_ARGUMENT)
+            ->addArgument(
+                self::ORDER_ARGUMENT,
+                InputArgument::REQUIRED,
+                'Order to the Drink Machine'
+            )
             ->setDescription('Order to the Drink Machine');
 
         $this
-            ->setName('make')
-            ->addArgument('money', InputArgument::OPTIONAL, 'Money inserted into the Drink Machine')
+            ->setName(self::MONEY_ARGUMENT)
+            ->addArgument(
+                self::MONEY_ARGUMENT,
+                InputArgument::OPTIONAL,
+                'Money inserted into the Drink Machine'
+            )
             ->setDescription('Money inserted into the Drink Machine');
 
         $this->setName('extraHot')
-            ->addOption('extra-hot', 'eh', InputOption::VALUE_OPTIONAL, 'Extra hot drink', false)
+            ->addOption(
+                self::EXTRA_HOT_OPTION,
+                'eh',
+                InputOption::VALUE_OPTIONAL,
+                'Extra hot drink',
+                false
+            )
             ->setDescription('Extra hot drink');
     }
 
@@ -57,11 +74,11 @@ class DrinkMachineCommand extends Command
         OutputInterface $output
     ): int {
         /** @var string $rawMoney */
-        $rawMoney = $input->getArgument('money');
+        $rawMoney = $input->getArgument(self::MONEY_ARGUMENT);
         /** @var string $rawOrder */
-        $rawOrder = $input->getArgument('order');
+        $rawOrder = $input->getArgument(self::ORDER_ARGUMENT);
         $orderOptions = explode(':', $rawOrder);
-        $extraHot = false !== $input->getOption('extra-hot');
+        $extraHot = false !== $input->getOption(self::EXTRA_HOT_OPTION);
 
         try {
             Assert::oneOf($orderOptions[0], array_keys(self::OPTIONS));
@@ -72,7 +89,7 @@ class DrinkMachineCommand extends Command
             }
             Assert::count($orderOptions, 3, 'Insufficient parameters');
             $option = self::OPTIONS[$orderOptions[0]];
-            $result = $this->command->__invoke(
+            $result = $this->handler->__invoke(
                 new DrinkMakerQuery($option, (int)$orderOptions[1], $extraHot, (float)$rawMoney)
             );
             $output->write($result);
