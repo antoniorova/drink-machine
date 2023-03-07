@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DrinkMachine\Tests\Unit\Domain\Entities;
 
+use DrinkMachine\Domain\Entities\Chocolate;
 use DrinkMachine\Domain\Entities\DrinkMaker;
 use DrinkMachine\Domain\Entities\Money;
 use DrinkMachine\Domain\Entities\Order;
@@ -13,169 +14,24 @@ use PHPUnit\Framework\TestCase;
 
 class DrinkMakerTest extends TestCase
 {
-    /** @dataProvider getChocolateInputs */
-    public function testShouldCreateDrinkMakerFromChocolateOrder(int $sugar, bool $extraHot, string $message): void
+    public function testShouldCreateDrinkMakerFromOrder(): void
     {
         $order = new Order(
             'chocolate',
-            $sugar,
-            $extraHot,
+            1,
+            true,
             Money::fromFloat(0.5)
         );
         $drinkMaker = DrinkMaker::fromOrder($order);
 
         $this->assertEquals(
-            $message,
-            $drinkMaker->getMessage()
+            $order,
+            $drinkMaker->order
         );
-    }
-
-    public function getChocolateInputs(): Generator
-    {
-        yield 'Get Chocolate with 1 sugar' => [
-            1,
-            false,
-            'Drink maker makes 1 chocolate with 1 sugar and a stick'
-        ];
-
-        yield 'Get Chocolate with 2 sugar' => [
-            2,
-            false,
-            'Drink maker makes 1 chocolate with 2 sugar and a stick'
-        ];
-
-        yield 'Get Chocolate with no sugar' => [
-            0,
-            false,
-            'Drink maker makes 1 chocolate with no sugar - and therefore no stick'
-        ];
-
-        yield 'Get Chocolate with 1 sugar and extra hot' => [
-            1,
-            true,
-            'Drink maker makes an extra hot chocolate with 1 sugar and a stick'
-        ];
-
-        yield 'Get Chocolate with no sugar and extra hot' => [
-            0,
-            true,
-            'Drink maker makes an extra hot chocolate with no sugar - and therefore no stick'
-        ];
-    }
-
-    /** @dataProvider getCoffeeInputs */
-    public function testShouldCreateDrinkMakerFromCoffeeOrder(int $sugar, bool $extraHot, string $message): void
-    {
-        $order = new Order(
-            'coffee',
-            $sugar,
-            $extraHot,
-            Money::fromFloat(0.6)
-        );
-        $drinkMaker = DrinkMaker::fromOrder($order);
 
         $this->assertEquals(
-            $message,
-            $drinkMaker->getMessage()
-        );
-    }
-
-    public function getCoffeeInputs(): Generator
-    {
-        yield 'Get Coffee with 1 sugar' => [
-            1,
-            false,
-            'Drink maker makes 1 coffee with 1 sugar and a stick'
-        ];
-
-        yield 'Get Coffee with 2 sugar' => [
-            2,
-            false,
-            'Drink maker makes 1 coffee with 2 sugar and a stick'
-        ];
-
-        yield 'Get Coffee with no sugar' => [
-            0,
-            false,
-            'Drink maker makes 1 coffee with no sugar - and therefore no stick'
-        ];
-
-        yield 'Get Coffee with 1 sugar and extra hot' => [
-            1,
-            true,
-            'Drink maker makes an extra hot coffee with 1 sugar and a stick'
-        ];
-
-        yield 'Get Coffee with no sugar and extra hot' => [
-            0,
-            true,
-            'Drink maker makes an extra hot coffee with no sugar - and therefore no stick'
-        ];
-    }
-
-    /** @dataProvider getTeaInputs */
-    public function testShouldCreateDrinkMakerFromTeaOrder(int $sugar, bool $extraHot, string $message): void
-    {
-        $order = new Order(
-            'tea',
-            $sugar,
-            $extraHot,
-            Money::fromFloat(0.4)
-        );
-        $drinkMaker = DrinkMaker::fromOrder($order);
-
-        $this->assertEquals(
-            $message,
-            $drinkMaker->getMessage()
-        );
-    }
-
-    public function getTeaInputs(): Generator
-    {
-        yield 'Get Tea with 1 sugar' => [
-            1,
-            false,
-            'Drink maker makes 1 tea with 1 sugar and a stick'
-        ];
-
-        yield 'Get Tea with 2 sugar' => [
-            2,
-            false,
-            'Drink maker makes 1 tea with 2 sugar and a stick'
-        ];
-
-        yield 'Get Tea with no sugar' => [
-            0,
-            false,
-            'Drink maker makes 1 tea with no sugar - and therefore no stick'
-        ];
-
-        yield 'Get Tea with 1 sugar and extra hot ' => [
-            1,
-            true,
-            'Drink maker makes an extra hot tea with 1 sugar and a stick'
-        ];
-
-        yield 'Get Tea with no sugar and extra hot ' => [
-            0,
-            true,
-            'Drink maker makes an extra hot tea with no sugar - and therefore no stick'
-        ];
-    }
-
-    public function testShouldCreateDrinkMakerFromOrangeJuiceOrder(): void
-    {
-        $order = new Order(
-            'orange juice',
-            0,
-            false,
-            Money::fromFloat(0.6)
-        );
-        $drinkMaker = DrinkMaker::fromOrder($order);
-
-        $this->assertEquals(
-            'Drink maker makes 1 orange juice',
-            $drinkMaker->getMessage()
+            new Chocolate(),
+            $drinkMaker->drink
         );
     }
 

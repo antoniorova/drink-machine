@@ -89,10 +89,11 @@ class DrinkMachineCommand extends Command
             }
             Assert::count($orderOptions, 3, 'Insufficient parameters');
             $option = self::OPTIONS[$orderOptions[0]];
-            $result = $this->handler->__invoke(
+            $drink = $this->handler->__invoke(
                 new DrinkMakerQuery($option, (int)$orderOptions[1], $extraHot, (float)$rawMoney)
             );
-            $output->write($result);
+
+            $output->write(StringTransformer::apply($drink));
 
             return Command::SUCCESS;
         } catch (Exception $e) {

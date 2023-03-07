@@ -9,8 +9,8 @@ use Webmozart\Assert\Assert;
 class DrinkMaker
 {
     private function __construct(
-        private readonly Order $order,
-        private readonly DrinkInterface $drink
+        public readonly Order $order,
+        public readonly DrinkInterface $drink
     ) {
     }
 
@@ -32,31 +32,5 @@ class DrinkMaker
         );
 
         return new self($order, $drink);
-    }
-
-    public function getMessage(): string
-    {
-        $output = sprintf(
-            'Drink maker makes %s %s',
-            true === $this->order->extraHot ? 'an extra hot' : '1',
-            $this->drink->name()
-        );
-
-        if (false === $this->drink->isHotDrink()) {
-            return $output;
-        }
-
-        if ($this->order->sugar > 0) {
-            return sprintf(
-                '%s with %d sugar and a stick',
-                $output,
-                $this->order->sugar
-            );
-        }
-
-        return sprintf(
-            '%s with no sugar - and therefore no stick',
-            $output
-        );
     }
 }
